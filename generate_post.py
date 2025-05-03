@@ -2,11 +2,11 @@ import openai
 import os
 from datetime import datetime
 
-openai.api_key = os.getenv("OPENAI_API_KEY")
+client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 prompt = "Girişimcilik ve yapay zeka hakkında bilgilendirici, özgün, SEO uyumlu bir blog yazısı yaz."
 
-response = openai.ChatCompletion.create(
+response = client.chat.completions.create(
     model="gpt-3.5-turbo",
     messages=[
         {"role": "system", "content": "Sen profesyonel bir blog yazarı ve içerik uzmanısın."},
@@ -14,9 +14,8 @@ response = openai.ChatCompletion.create(
     ]
 )
 
-blog_content = response['choices'][0]['message']['content']
+blog_content = response.choices[0].message.content
 
-# Dosya adı
 today = datetime.today().strftime('%Y-%m-%d')
 filename = f"_posts/{today}-ai-blog.md"
 
